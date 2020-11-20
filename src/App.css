@@ -1,0 +1,367 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&display=swap');
+
+
+/* --------------------------------------------- */
+/* BASIC SETUP */
+/* --------------------------------------------- */
+
+* {
+    margin: 0;
+    padding: 0;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+html,
+body {
+    color: #2D2D2D;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+    line-height: 150%;
+    background-color: #372C64;
+}
+
+button {
+  cursor: pointer;
+}
+
+.clearfix { zoom:1 }
+.clearfix:after {
+    content: ".";
+    clear: both;
+    display: block;
+    height: 0;
+    visibility: hidden;
+}
+
+.row {
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+.col { 
+  background-color: #F8F8F8;
+  border-radius: 30px;
+  float: left;
+  width: 28%;
+  margin: 0 1%;
+  padding: 40px 40px;
+  position: relative;
+}
+
+.col-posts,
+.col-quaq { padding: 40px 0; 
+text-align: center; }
+
+.pagina_main { padding-top: 90px; }
+
+/* ------ HEADINGS ------ */
+
+h1,
+h2,
+h3,
+p {
+  font-weight: inherit;
+  font-family: inherit;
+}
+
+h1 {
+  text-align: center;
+  font-size: 24px;
+  word-spacing: 4px;
+  letter-spacing: 1px;
+  color: #0F589C;
+}
+
+h1:after {
+  display: block;
+  width: 30px;
+  height: 2px;
+  background-color: #0F589C;
+  content: " ";
+  margin: 0 auto;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+h2 {
+  font-size: 20px;
+  word-spacing: 2px;
+  letter-spacing: 1px;
+  margin-bottom: 20px;
+}
+
+h3 {
+  font-size: 16px;
+}
+
+
+p { font-size: 16px;
+}
+
+.texto p {
+    line-height: 150%;
+    text-align: justify;
+}
+
+
+.icon {
+  display: block;
+  color: linear-gradient(rgba(9,85,170,1), rgba(2,121,255,1));
+}
+
+/* ------ QUEBRAS ------ */
+
+.quebra {
+    display: block;
+    height: 1px;
+    width: 90%;
+    background-color: #DEDEDE;
+    margin-left: 5%;
+}
+
+/* ------ BUTTONS ------ */
+
+.btn {
+  margin: 10px;
+  height:50px;
+  width: 320px;
+  background: linear-gradient(268.39deg, #23DBFF 6.54%, #3EBFFF 93.92%);
+  box-shadow: 0px 0px 15px rgba(1, 183, 255, 0.4);
+  border-radius: 10px;
+  border: none;
+  font-size: 16px;
+  font-weight: inherit;
+  font-family: inherit;
+}
+.btn:link,
+.btn:visited {
+  background: linear-gradient(268.39deg, #23DBFF 6.54%, #3EBFFF 93.92%);
+  transition: linear-gradient 0.2s, border 0.2s, color 0.2s;
+}
+
+.btn:hover,
+.btn:active {
+  background: linear-gradient(259.93deg, #1A9FEA 0%, #094F90 100.07%, #093F8F 100.08%);
+  transition: linear-gradient 0.2s, border 0.2s, color 0.2s;
+  border: none;
+  color: #F8F8F8;
+}
+
+/* ------ LINKS ------ */
+
+a { margin: 0;
+padding: 0; }
+
+a:link,
+a:visited {
+  color: #0955AA;
+  text-decoration: none;
+  -webkit-transition: border-bottom 0.2s, color 0.2s;
+  transition: border-bottom 0.2s, color 0.2s;
+}
+
+a:hover,
+a:active {
+  color: #0955AA;
+}
+
+/* ------ CATEGORIA ------ */
+
+.categoria {
+  display: inline-block;
+  padding: 20px 25px;
+  margin: 5px;
+  font-size: 16px;
+  font-weight: 300;
+  font-family: inherit;
+  color: #f8f8f8;
+  border-radius: 10px;
+  background: linear-gradient(268.76deg, #981FC2 1.87%, #3D09A9 100%);
+  border: none;
+}
+
+/* ------ TAGS ------ */
+
+.tag {
+    display: inline-block;
+    text-decoration: none;
+    transition: background-color 0.2s, border 0.2s, color 0.2s;
+    font-size: 16px;
+    font-weight: 300;
+    font-family: inherit;
+    height: 50px;
+    padding: 10px 20px;
+    background: linear-gradient(268.39deg, #0B4DB1 6.54%, #1545A6 53.41%, #21326E 93.92%);
+    border-radius: 30px;
+    color: #f8f8f8;
+    text-align: center;
+    margin: 5px;
+    border: none;
+}
+
+/* --------------------------------------------- */
+/* HEADER */
+/* --------------------------------------------- */
+
+.logo { width: 40px; }
+
+.main-nav {
+    padding: 10px 40px;
+    position: relative;
+    z-index: 999;
+}
+
+.navmain h2 {
+  color: #fff;
+  float: right;
+  text-align: right;
+}
+
+/* --------------------------------------------- */
+/* COLUNA INFORMAÇÕES */
+/* --------------------------------------------- */
+
+.col-info { width: 35%; position: relative; }
+
+.perfil img {
+    position: absolute;
+    float: left;
+    margin-top: -80px;
+    margin-left: -20px;
+    width: 130px;
+    height: 130px;
+    border-radius: 30px;
+    filter: drop-shadow(0px 4px 15px rgba(0, 0, 0, 0.10));
+}
+
+.nome_span { color: #0279FF; }
+
+.infos { margin-left: 140px; }
+
+.secao .perfil { margin: 0; }
+
+.id_pagina { color: #767676; }
+
+.seguidores {
+    margin-top: -30px;
+    color: #0F589C;
+    text-align: right;
+}
+
+.descricao { 
+margin-top:5%; 
+}
+
+.secao { margin: 20px 0; }
+
+.secao h1 { margin-bottom: 20px; }
+
+.background { 
+  width: 100%;
+  position:absolute;
+  left: 0;
+  top: 0;
+  z-index:0;
+}
+
+.col .perfil { margin: 0; }
+
+.secaonome { 
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 40px auto;
+}
+
+.secaohorario { 
+  text-align: center;
+}
+
+.NomeConaje { 
+  font-weight:400;
+  color: #0279FF;
+  font-size: 24px;
+}
+
+.PrivadoConaje { 
+  font-weight:400;
+  color: #767676;
+  font-size: 16px;
+  padding-top: 10px;
+}
+
+.horario1 { 
+  font-weight:400;
+  color: #2D2D2D;
+  font-size: 14px;
+  padding-top: 10px;
+}
+
+.sairdaconta { 
+  background: linear-gradient(268.76deg, #981FC2 1.87%, #3D09A9 100%);
+box-shadow: 0px 0px 15px rgba(108, 21, 182, 0.4);
+border-radius: 10px;
+color: #fff !important;
+text-align:center;
+float: right;
+margin-right: 5%;
+}
+
+.secaovideo { text-align: center; }
+
+.quack { 
+  height:100%;
+}
+
+.iframe_quaq {
+  width: 385px;
+  height: 690px;
+  border-radius: 20px;
+  padding: 10px 2px 2px 2px;
+  margin-top: -3%;
+  margin-left: -2px;
+}
+
+.iframe_quaq_mobile {
+    width: 100%;
+    height: 70vh;
+    border: none;
+    overflow: hidden;
+  }
+  
+  .pageCondicoes { padding: 0;}
+
+.body_event_grid_right_1 {
+  position: absolute;
+  width: 385px;
+  height: 690px;
+  left: 1070px;
+  top: 48vh;
+
+  background: #FFFFFF;
+  border-radius: 20px;
+  padding: 10px 2px 2px 2px;
+}
+
+.CriarPostagem { 
+  margin-bottom:20px;
+}
+
+.Banana { 
+  font-size: 25px;
+  color: #981FC2;
+}
+
+.video {
+  width: 100%;
+  height: auto;
+}

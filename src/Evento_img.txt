@@ -1,0 +1,388 @@
+import React, { useState, useEffect } from 'react';
+import fireDb from "./firebase";
+import { useParams }  from 'react-router-dom'
+import FileUploader from "react-firebase-file-uploader";
+// import { Container } from './styles';
+
+import Modal from './components/Modal';
+import Quaq from './components/Quaq';
+import Postagens from './components/Postagens';
+
+
+
+
+function Evento() {
+
+    function abrirmodal() {
+        setNomeImagem(makeid(10))    
+        setIsModalVisible(true)
+    }
+
+    function makeid(length) {
+        var result           = '';
+        var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        var charactersLength = characters.length;
+        for ( var i = 0; i < length; i++ ) {
+           result += characters.charAt(Math.floor(Math.random() * charactersLength));
+        }
+        return(result + ".jpg");
+     }
+     
+
+   function handleUploadError (error) {
+        console.error(error);
+      };
+      
+
+   function handleUploadSuccess () {
+      console.log("imagem anexada");
+       console.log(nomeImagem);
+        fireDb
+          .storage()
+          .ref("images")
+          .child(usuarioObjects.identifier)
+          .child(nomeImagem)
+          .getDownloadURL()
+          .then(function(url) {
+            console.log("teste123");   
+            console.log(url);  
+            setImagemPost(url)  
+          })
+          
+          .catch(function(error) {
+
+            // A full list of error codes is available at
+            // https://firebase.google.com/docs/storage/web/handle-errors
+            switch (error.code) {
+              case 'storage/object-not-found':
+                // File doesn't exist
+                console.error(error.code);
+                break;
+          
+              case 'storage/unauthorized':
+                // User doesn't have permission to access the object
+                console.error(error.code);
+                break;
+          
+              case 'storage/canceled':
+                // User canceled the upload
+                console.error(error.code);
+                break;
+          
+          
+              case 'storage/unknown':
+                // Unknown error occurred, inspect the server response
+                console.error(error.code);
+                break;
+            }
+          });
+          
+      };
+
+    function writeUserPost(description, imagemPostagem) {
+        var newPostRef = fireDb.database().ref('postagensEventos/-MKZWuP_hcdBiItFx3Ms').push();
+        const key = newPostRef.key
+        newPostRef.set({
+          identifier: key,
+          idCriador: usuarioObjects.identifier,
+          nome: usuarioObjects.nome,
+          tagNome : usuarioObjects.tagNome,
+          imagemProfile : usuarioObjects.imagemProfile,
+          description : description.textoPost,
+          imagemPostagem : imagemPostagem.imagemPost
+        });
+      }
+
+   
+  const { id } = useParams();
+  var [] = useState('');
+  var [eventObjects, setEventObjects] = useState({})
+  var [postObjects, setPostObjects] = useState({})
+  var [categoriaObjects, setCategoriaObjects] = useState({})
+  var [tagObjects, setTagObjects] = useState({})
+  var [usuarioObjects, setUsuarioObjects] = useState({})
+
+
+
+  const [textoPost, setTextoPost] = useState("");
+  const [imagemPost, setImagemPost] = useState("");
+  const [nomeImagem, setNomeImagem] = useState("");
+
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isModalQuaq, setIsModalQuaq] = useState(false);
+  const [isModalPostagens, setIsModalPostagens] = useState(false);
+
+  //Once components load complete
+  useEffect(() => {
+
+    fireDb.database().ref().child('eventos').child("-MKZWuP_hcdBiItFx3Ms").on('value', snapshot => {
+          if (snapshot.val() != null) {
+              setEventObjects({
+                  ...snapshot.val()
+              });
+          }
+      })
+
+      fireDb.database().ref().child('postagensEventos').child("-MKZWuP_hcdBiItFx3Ms").on('value', snapshot => {
+        if (snapshot.val() != null) {
+          setPostObjects({
+                ...snapshot.val()
+            });
+            
+        }
+    })
+
+    fireDb.database().ref().child('eventos').child("-MKZWuP_hcdBiItFx3Ms").child('categorias').on('value', snapshot => {
+        if (snapshot.val() != null) {
+            setCategoriaObjects({
+                ...snapshot.val()
+            });
+        }
+    })
+
+    fireDb.database().ref().child('eventos').child("-MKZWuP_hcdBiItFx3Ms").child('tags').on('value', snapshot => {
+        if (snapshot.val() != null) {
+            setTagObjects({
+                ...snapshot.val()
+            });
+        }
+    })
+
+    fireDb.database().ref().child('usersConaje').child(fireDb.auth().currentUser.uid).on('value', snapshot => {
+        if (snapshot.val() != null) {
+            setUsuarioObjects({
+                ...snapshot.val()
+            });
+        }
+    })
+
+    
+
+
+  }, [])
+
+  console.log(fireDb.auth().currentUser.uid);
+
+  return (
+    <>
+
+{ /* HTML */ }
+        
+
+{ /* NAVEGADOR */ }
+<header>
+    <nav className="main-nav">
+        <div className="navmain">
+            <img src="https://firebasestorage.googleapis.com/v0/b/meaple-f95d3.appspot.com/o/img%2FMeaple_logo.png?alt=media&token=09fb3409-84d8-4cd5-bbc6-a11f870b330c" alt="Meaple Logo" className="logo"/>
+            <button onClick={() => fireDb.auth().signOut()} className="btn btn_cta sairdaconta" href="#features">Sair da conta</button>
+        </div>
+    </nav>
+
+    <div>
+    <img className="background" src="https://firebasestorage.googleapis.com/v0/b/meaple-f95d3.appspot.com/o/img%2FGroup%20743.png?alt=media&token=7b22cb1e-ae9b-4f5e-8f8c-8fd9f3e6bac3"/>
+    </div>
+</header>
+        
+{ /* COLUNA POSTS */ }
+
+<section class="pagina_main row">
+        <div className="col col-posts">
+            <h1>Posts</h1>
+
+    <div className="body">
+    <span className="tip tip-up"></span>
+
+      <ul>
+    {
+        Object.keys(postObjects).map((key) => (
+            <div className="post" key={key}>
+                <div class="post_usuario">
+                    <img className="post_usuario_foto" src={postObjects[key].imagemProfile} />
+                    <div class="post_usuario_infos">
+                        <p className="post_usuario_nome">{postObjects[key].nome}</p>
+                        <p className="post_usuario_id">@{postObjects[key].tagNome}</p>
+                    </div>
+                </div>
+                <p className="post_usuario_texto">{postObjects[key].description}</p>
+                <img className="post_usuario_imagem" src={postObjects[key].imagemPostagem} />
+
+                <div className="quebra quebra_post"></div>
+            </div>
+        ))
+    }
+    </ul>
+
+    </div>
+
+        </div>
+        
+        
+        <div className="capa">
+            
+        </div>
+
+        
+{ /* COLUNA INFORMACOES */ }
+        
+        <div className="col col-info">
+            <div className="secao perfil">
+                <img src="https://firebasestorage.googleapis.com/v0/b/meaple-f95d3.appspot.com/o/img%2Fconaje_logo.jpg?alt=media&token=84323f4f-6715-4414-b35a-7aab30eb2ee3"/>
+                <div className="infos">
+                    <div className="creditos">
+                        <h3>Organizado por <span className="nome_span">@Conaje</span> em parceria com <span className="nome_span">@Sebrae</span> </h3>
+                    </div>
+                    
+                </div>
+            </div>
+            
+            <div className="secao secaonome">
+                <div className="NomeConaje"> Congresso Conaje </div>
+                <div className="PrivadoConaje"> Privado, Online & Presencial </div>
+            </div>
+
+            <div className="secao secaohorario">
+                Sexta-feira, 20 de Novembro de 2020 às 13:30 GMT-3<br/>
+                Sábado, 21 de Novembro de 2020 às 13:30 GMT-3
+            </div>
+
+            <div className="quebra"></div>
+            
+            <div className="secao secaovideo">
+
+            
+            <iframe src="https://www.youtube.com/embed/5qap5aO4i9A" frameborder="0" allowfullscreen="true"></iframe>
+                
+                
+            
+
+
+{ /* MODAL POSTAGEM */ }
+
+<button className="btn" onClick={()=> abrirmodal()}>Criar postagem</button>
+{isModalVisible ? (
+<Modal onClose={() => setIsModalVisible(false)}>
+<h2>Nova Publicação</h2>
+
+<div className="CriarPostagem">
+
+<input class="label_postar" value={textoPost} placeholder="O que você quer compartilhar?" onChange={e => setTextoPost(e.target.value)} type="textarea" />
+    {imagemPost && <img src={imagemPost} />}
+          <FileUploader
+            accept="image/*"
+            name="imagempostagem"
+            filename={nomeImagem}
+            storageRef={fireDb.storage().ref("images").child(usuarioObjects.identifier)}
+            onUploadError={handleUploadError}
+            onUploadSuccess={handleUploadSuccess()}
+          />
+
+<br/>
+
+<button className="btn" onClick={()=> writeUserPost({textoPost}, {imagemPost})}>Publicar</button>
+
+
+  </div>
+
+  <div class="modal_bg"></div>
+</ Modal> 
+) : null}   
+
+                <button className="btn" id="quack" onClick={()=> setIsModalQuaq(true)}>Responder perguntas</button>
+{isModalQuaq ? (
+<Quaq onClose={() => setIsModalQuaq(false)}>
+<div>
+<iframe className="iframe_quaq_mobile" src="https://quaq.com.br/conaje"></iframe>
+
+  </div>
+
+</ Quaq> 
+) : null}
+
+
+<button className="btn" id="postson" onClick={()=> setIsModalPostagens(true)}>Ver postagens</button>
+{isModalPostagens ? (
+<Postagens onClose={() => setIsModalPostagens(false)}>
+
+<div className="body">
+    <span className="tip tip-up"></span>
+
+    <h2> Posts </h2>
+<div className="body">
+    <span className="tip tip-up"></span>
+
+    <h2> Posts </h2>
+      <ul>
+    {
+        Object.keys(postObjects).map((key) => (
+            <div className="post" key={key}>
+            <div class="post_usuario">
+                <img className="post_usuario_foto" src={postObjects[key].imagemProfile} />
+                <div class="post_usuario_infos">
+                    <p className="post_usuario_nome">{postObjects[key].nome}</p>
+                    <p className="post_usuario_id">@{postObjects[key].tagNome}</p>
+                </div>
+            </div>
+            <p className="post_usuario_texto">{postObjects[key].description}</p>
+            <img className="post_usuario_imagem" src={postObjects[key].imagemPostagem} />
+
+            <div className="quebra quebra_post"></div>
+        </div>
+            
+            
+        ))
+    }
+
+    </ul>
+
+    </div>
+
+</ Postagens> 
+) : null} 
+
+            </div>
+
+            <div className="quebra"></div>
+
+            <div className="secao secao_categorias">
+                <h2>Categorias</h2>
+                <button className="categoria" href="#">Congresso e Networking</button>
+                <button className="categoria" href="#">Tecnologia</button>
+            </div>
+            
+            <div className="quebra"></div>
+            
+            <div className="secao secao_tags">
+                <h2>Tags</h2>
+                <button className="tag" href="#">Empreendedor </button>
+                <button className="tag" href="#">Mulheres Empreendedoras </button>
+                <button className="tag" href="#">Associativismo </button>
+                <button className="tag" href="#">Conaje</button>
+                <button className="tag" href="#">Empreendedor Digital  </button>
+                <button className="tag" href="#">Empreender </button>
+            </div>
+
+            <div className="quebra"></div>
+            
+            <div className="secao descricao">
+                <h2>Sobre o Evento</h2>
+                <p>
+                Em parceria com a FACIAP – Federação das Associações Comerciais e Empresariais do Paraná, a CONAJE – Confederação Nacional de Jovens Empresários, orgulhosamente apresenta a realização do 26º Congresso Nacional de Jovens Empreendedores, que esse ano receberá também o XI Congresso Ibero-americano de Jovens Empresários - CIJE 2020, nos dias 20 e 21 de novembro de 2020, em Foz do Iguaçu – Paraná.
+                </p>
+            </div>
+        </div>
+        
+    { /* COLUNA QUAQ */ }
+
+        <div className="col col-quaq">
+            <h1>Interação</h1>
+            
+            <iframe className="iframe_quaq" src="https://quaq.com.br/conaje"></iframe>
+            
+        </div>
+</section>
+    </>
+  );
+};
+
+export default Evento;
+    

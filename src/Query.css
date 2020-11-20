@@ -1,0 +1,49 @@
+@media only screen and (max-width: 1150px) {
+    .col { width: 95%;
+        margin-left: 2.5%;
+    margin-bottom: 60px;}
+    .btn { 
+        width: 250px;
+    margin: 10px;
+    }
+    .col-eventos { 
+        display:none;
+    }
+    .col-posts { 
+        display:none;
+    }
+
+    .modal { width: 80% !important; 
+    top: 0%;
+    left: 10% !important; }
+  }
+
+  @media only screen and (max-width: 600px) {
+    .col { width: 95%;
+        padding: 20px;}
+  }
+
+  @media only screen and (max-width: 400px) {
+    .btn { width: 250px; }
+    .sairdaconta { width: 200px; }
+  }
+
+
+  @media only screen and (min-width: 1150px) {
+    .btn { 
+    width: 250px;
+    margin: 10px;
+    }
+    .btn#quack { 
+        display:none;
+    }
+    .btn#postson { 
+        display:none;
+    }
+  }
+
+
+
+
+
+  
